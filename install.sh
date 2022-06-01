@@ -18,7 +18,7 @@ mv gg18_sign_client /usr/local/bin/
 
 echo 'setup environments'
 mkdir /dotoracle
-echo '{"parties":"11", "threshold":"7"}' >> /dotoracle/params.json
+echo '{"parties":"5", "threshold":"3"}' >> /dotoracle/params.json
 sudo tee /dotoracle/dotoracle.sh <<EOF
 #!/usr/bin/env bash
 cd /dotoracle && gg18_keygen_client http://195.201.174.142:10000 /dotoracle/keys.store
