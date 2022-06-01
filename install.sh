@@ -40,5 +40,5 @@ chmod +x ${DIR}/generateKeyStore.sh
 echo "Waiting generate key store....."
 ${DIR}/generateKeyStore.sh
 
-echo "Generate successful. Please backup your key store at `${DIR}`/keys.store"
+echo "Generate successful. Please backup your key store at ${DIR}/keys.store"
 
