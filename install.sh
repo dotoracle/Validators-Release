@@ -30,7 +30,7 @@ mkdir ${DIR}
 echo '{"parties":"11", "threshold":"7"}' >> ${DIR}/params.json
 sudo tee ${DIR}/generateKeyStore.sh <<EOF
 #!/usr/bin/env bash
-cd ${DIR} && gg18_keygen_client ${DIR}/keys.store
+cd ${DIR} && gg18_keygen_client $1 ${DIR}/keys.store
 EOF
 
 
