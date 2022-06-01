@@ -1,12 +1,13 @@
 #!/usr/bin/sh
 
 # ENV
-MANAGER=195.201.174.142
 DIR=/dotoracle
-PORT=10000
-SERIAL=://
-PROTOCOL=http
 
+if [ $# -eq 0 ]
+  then
+  echo 'missing URL argument'
+  exit
+fi
 
 # Install library
 echo 'install necessary library'
@@ -26,11 +27,12 @@ mv gg18_sign_client /usr/local/bin/
 
 echo 'setup environments'
 mkdir ${DIR}
-echo '{"parties":"11", "threshold":"7"}' >> ${DIR}/params.json
+echo '{"parties":"5", "threshold":"3"}' >> ${DIR}/params.json
 sudo tee ${DIR}/generateKeyStore.sh <<EOF
 #!/usr/bin/env bash
-cd ${DIR} && gg18_keygen_client ${PROTOCOL}${SERIAL}${MANAGER}:${PORT} ${DIR}/keys.store
+cd ${DIR} && gg18_keygen_client $1 ${DIR}/keys.store
 EOF
+
 
 chmod +x ${DIR}/generateKeyStore.sh
 
@@ -39,3 +41,4 @@ echo 'Waiting generate key store.....'
 ${DIR}/generateKeyStore.sh
 
 echo 'Generate successful. Please backup your key store at ${DIR}/keys.store'
+
