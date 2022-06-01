@@ -1,5 +1,13 @@
 #!/usr/bin/sh
 
+# ENV
+MANAGER=195.201.174.142
+DIR=/dotoracle
+PORT=10000
+SERIAL=://
+PROTOCOL=http
+
+
 # Install library
 echo 'install necessary library'
 apt update -y && apt install -y pkg-config libssl-dev openssl
@@ -17,33 +25,17 @@ mv gg18_keygen_client /usr/local/bin/
 mv gg18_sign_client /usr/local/bin/
 
 echo 'setup environments'
-mkdir /dotoracle
-echo '{"parties":"5", "threshold":"3"}' >> /dotoracle/params.json
-sudo tee /dotoracle/dotoracle.sh <<EOF
+mkdir ${DIR}
+echo '{"parties":"11", "threshold":"7"}' >> ${DIR}/params.json
+sudo tee ${DIR}/generateKeyStore.sh <<EOF
 #!/usr/bin/env bash
-cd /dotoracle && gg18_keygen_client http://195.201.174.142:10000 /dotoracle/keys.store
+cd ${DIR} && gg18_keygen_client ${PROTOCOL}${SERIAL}${MANAGER}:${PORT} ${DIR}/keys.store
 EOF
 
-chmod +x /dotoracle/dotoracle.sh
+chmod +x ${DIR}/generateKeyStore.sh
 
-echo 'init service'
-sudo tee /etc/systemd/system/dotoracleValidator.service <<EOF
-[Unit]
-Description=DotOracle Validator
-After=network-online.target
-Requires=network-online.target
 
-[Service]
-ExecStart=/dotoracle/dotoracle.sh
-LimitAS=infinity
-LimitRSS=infinity
-LimitCORE=infinity
-LimitNOFILE=6553600
-Restart=always
+echo 'Waiting generate key store.....'
+${DIR}/generateKeyStore.sh
 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-echo 'start service'
-sudo systemctl enable dotoracleValidator.service && sudo systemctl start dotoracleValidator.service
+echo 'Generate successful. Please backup your key store at ${DIR}/keys.store'
