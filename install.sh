@@ -27,7 +27,7 @@ mv gg18_sign_client /usr/local/bin/
 
 echo "setup environments"
 mkdir ${DIR}
-echo '{"parties":"5", "threshold":"3"}' >> ${DIR}/params.json
+echo '{"parties":"8", "threshold":"5"}' >> ${DIR}/params.json
 sudo tee ${DIR}/generateKeyStore.sh <<EOF
 #!/usr/bin/env bash
 cd ${DIR} && gg18_keygen_client $1 ${DIR}/keys.store
